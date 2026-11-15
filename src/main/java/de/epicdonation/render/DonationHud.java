@@ -11,15 +11,15 @@ import net.minecraft.sounds.SoundEvents;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
-import java.util.Random;
 
 public final class DonationHud {
     private static String player = "";
     private static double amount;
     private static long started;
     private static boolean active;
-    private static final Random RANDOM = new Random(41);
     private static final DecimalFormat FORMAT = new DecimalFormat("#,##0.##",
+            DecimalFormatSymbols.getInstance(Locale.US));
+    private static final DecimalFormat COMPACT_FORMAT = new DecimalFormat("0.##",
             DecimalFormatSymbols.getInstance(Locale.US));
     private DonationHud() {}
     public static void showDonation(String name, double value) {
@@ -69,7 +69,7 @@ public final class DonationHud {
         g.pose().translate(cx, cy);
         g.pose().scale(pulse, pulse);
         g.drawCenteredString(mc.font, tier.title, 0, -panelH/2+13, primary);
-        g.drawCenteredString(mc.font, FORMAT.format(amount) + " Coins", 0, -4, primary);
+        g.drawCenteredString(mc.font, format(amount), 0, -4, primary);
         g.drawCenteredString(mc.font, "Von: " + player, 0, 18, 0xFFFFFFFF & ((int)(alpha*255) << 24 | 0x00FFFFFF));
         g.pose().popMatrix();
         if (cfg.particles) {
@@ -88,5 +88,15 @@ public final class DonationHud {
             g.fill(0, 0, w, h, (flash << 24) | 0x00FFD54F);
         }
     }
-    public static String format(double value) { return FORMAT.format(value); }
+    public static String format(double value) {
+        if (!Double.isFinite(value)) return "0";
+        String[] suffixes = {"", "k", "m", "b", "t"};
+        double scaled = value;
+        int suffix = 0;
+        while (Math.abs(scaled) >= 1000 && suffix < suffixes.length - 1) {
+            scaled /= 1000;
+            suffix++;
+        }
+        return suffix == 0 ? FORMAT.format(value) : COMPACT_FORMAT.format(scaled) + suffixes[suffix];
+    }
 }
