@@ -30,7 +30,7 @@ public final class DonationHud {
         active = true;
         if (DonationConfig.get().sounds && EpicDonationClient.client().player != null) {
             EpicDonationClient.client().getSoundManager().play(
-                    SimpleSoundInstance.forUI(SoundEvents.UI_TOAST_CHALLENGE_COMPLETE.value(), 1.0F));
+                    SimpleSoundInstance.forUI(SoundEvents.UI_TOAST_CHALLENGE_COMPLETE, 1.0F));
         }
     }
     public static void tick() {
@@ -65,13 +65,13 @@ public final class DonationHud {
         g.fill(cx-panelW/2, cy-panelH/2, cx+panelW/2, cy+panelH/2, a | 0x00110B16);
         g.fill(cx-panelW/2, cy-panelH/2, cx+panelW/2, cy-panelH/2+2, primary);
         g.fill(cx-panelW/2, cy+panelH/2-2, cx+panelW/2, cy+panelH/2, secondary);
-        g.pose().pushPose();
-        g.pose().translate(cx, cy, 0);
-        g.pose().scale(pulse, pulse, 1);
+        g.pose().pushMatrix();
+        g.pose().translate(cx, cy);
+        g.pose().scale(pulse, pulse);
         g.drawCenteredString(mc.font, tier.title, 0, -panelH/2+13, primary);
         g.drawCenteredString(mc.font, FORMAT.format(amount) + " Coins", 0, -4, primary);
         g.drawCenteredString(mc.font, "Von: " + player, 0, 18, 0xFFFFFFFF & ((int)(alpha*255) << 24 | 0x00FFFFFF));
-        g.pose().popPose();
+        g.pose().popMatrix();
         if (cfg.particles) {
             int count = tier.threshold >= 1e9 ? 34 : tier.threshold >= 1e8 ? 24 : 12;
             for (int i=0; i<count; i++) {
