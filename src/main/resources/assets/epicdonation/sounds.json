@@ -1,0 +1,6 @@
+{
+  "donation_epic": {
+    "sounds": ["minecraft:ui.toast.challenge_complete"],
+    "subtitle": "Epic donation!"
+  }
+}
