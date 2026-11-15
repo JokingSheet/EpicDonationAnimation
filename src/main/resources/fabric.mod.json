@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "id": "epicdonation",
+  "version": "${version}",
+  "name": "Epic Donation Animation",
+  "description": "Client-side donation detection and cinematic HUD animations.",
+  "authors": ["EpicDonation"],
+  "license": "MIT",
+  "environment": "client",
+  "entrypoints": {
+    "client": ["de.epicdonation.EpicDonationClient"]
+  },
+  "depends": {
+    "fabricloader": ">=0.18.1",
+    "minecraft": "~1.21.11",
+    "java": ">=21",
+    "fabric-api": ">=0.141.6"
+  }
+}
